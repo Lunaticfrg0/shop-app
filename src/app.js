@@ -1,6 +1,7 @@
 const express = require('express')
 var bodyParser = require('body-parser')
 const path = require('path')
+const expressHbs = require('express-handlebars')
 
 const adminData = require('./routers/admin')
 const shopRoutes = require('./routers/shop')
@@ -9,7 +10,9 @@ const port = 3000
 
 const app = express()
 
-app.set('view engine', 'pug')
+app.engine('hbs', expressHbs({layoutsDir: path.join(__dirname, './', "views/layouts"), defaultLayout: 'main-layout', extname: "hbs"}))
+app.set('view engine', 'hbs')
+// app.set('view engine', 'pug')
 app.set('views', path.join(__dirname, './', "views"))
 
 app.use(bodyParser.urlencoded({extended: true}))
