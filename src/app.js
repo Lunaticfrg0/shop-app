@@ -1,6 +1,7 @@
 const express = require('express')
-var bodyParser = require('body-parser')
+const bodyParser = require('body-parser')
 const path = require('path')
+const db = require('./utils/database')
 
 const adminRoutes = require('./routers/admin')
 const shopRoutes = require('./routers/shop')
@@ -10,7 +11,6 @@ const errorCnontroller = require('./controllers/error')
 const port = 3000
 
 const app = express()
-
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, './', "views"))
