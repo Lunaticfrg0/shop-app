@@ -1,28 +1,35 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const path = require('path')
-const db = require('./utils/database')
+const express = require('express');
+const bodyParser = require('body-parser');
+const path = require('path');
+const sequelize = require('./utils/database');
 
-const adminRoutes = require('./routers/admin')
-const shopRoutes = require('./routers/shop')
+const adminRoutes = require('./routers/admin');
+const shopRoutes = require('./routers/shop');
 
-const errorCnontroller = require('./controllers/error')
+const errorCnontroller = require('./controllers/error');
 
-const port = 3000
+const port = 3000;
 
-const app = express()
+const app = express();
 
-app.set('view engine', 'ejs')
-app.set('views', path.join(__dirname, './', "views"))
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, './', 'views'));
 
-app.use(bodyParser.urlencoded({extended: true}))
-app.use(express.static(path.join(__dirname, '../public')))
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, '../public')));
 
-app.use('/admin', adminRoutes)
-app.use(shopRoutes)
+app.use('/admin', adminRoutes);
+app.use(shopRoutes);
 
-app.use(errorCnontroller.get404)
+app.use(errorCnontroller.get404);
 
-app.listen(port, ()=>{
-    console.log("Server is up on port " + port)
-})
+sequelize
+  .sync()
+  .then((result) => {
+    app.listen(port, () => {
+      console.log('Server is up on port ' + port);
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
